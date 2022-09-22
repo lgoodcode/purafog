@@ -1,26 +1,34 @@
 ---
-import Navbar from "./Navbar";
+import Navbar from './Navbar.astro'
+import '@/styles/globals.css'
+import '@/styles/fonts.css'
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Virus Sterilization / Protection; Mold Remediation / Prevention; Odor Elimination; Air Quality Evaluation">
-    <meta name="keywords" content="Virus, Sterilization, Protection, Mold, Remediation, Prevention, Odor, Elimination, Air, Quality, Evaluation">
-    <meta name="author" content="Lawrence Good">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta
+			name="description"
+			content="Virus Sterilization / Protection; Mold Remediation / Prevention; Odor Elimination; Air Quality Evaluation"
+		/>
+		<meta
+			name="keywords"
+			content="Virus, Sterilization, Protection, Mold, Remediation, Prevention, Odor, Elimination, Air, Quality, Evaluation"
+		/>
+		<meta name="author" content="Lawrence Good" />
 
-    <link rel="canonical" href="https://purafog.com/">
-    <link rel="shortlink" href="https://purafog.com/">
+		<link rel="canonical" href="https://purafog.com/" />
+		<link rel="shortlink" href="https://purafog.com/" />
 
-    <slot name="title"></slot>
+		<!-- On hover of nav element, prefetch it -->
+		<!-- <link rel="prefetch" type="text/html" href="https://purafog.com/our-services/"> -->
 
-    <!-- On hover of nav element, prefetch it -->
-    <!-- <link rel="prefetch" type="text/html" href="https://purafog.com/our-services/"> -->
+		<slot name="title" />
 	</head>
 	<body>
-    <Navbar />
+		<Navbar />
 		<slot />
 	</body>
 </html>

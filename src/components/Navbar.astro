@@ -1,0 +1,52 @@
+---
+import routes from '@/routes'
+
+const path = Astro.url.pathname
+console.log(path)
+---
+
+<div class="header">
+	<div class="banner py-2 text-center bg-gradient-to-b from-green-700 to-green-500">
+		<h3 class="font-bold text-white tracking-wide">
+			PURaFOG - YOUR MOLD EXPERT, HOURS 9-5 MON-SAT, 833-364-6653 aka 833-FOG-MOLD (Call or text)
+		</h3>
+	</div>
+	<div class="navbar centered">
+		<div class="h-[160px] py-2 flex gap-8">
+			<img src="/logo.webp" alt="logo" />
+			<nav class="flex items-center">
+				<ul class="flex flex-row">
+					{
+						routes.map((route) => (
+							<li>
+								<a
+									href={route.path}
+									class={[
+										'py-2',
+										'px-6',
+										'text-lg',
+										'font-bold',
+										'text-gray-600',
+										'border-b-4',
+										'border-b-transparent',
+										path === route.path ? 'border-b-green-600' : '',
+										'hover:border-b-green-600',
+									].join(' ')}
+								>
+									{route.name}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+			<div class="centered">
+				<button
+					class="btn text-white font-bold text-xl px-4 py-3 rounded-md uppercase bg-gradient-to-b from-green-600 to-green-400 hover:from-green-700 hover:to-green-500"
+				>
+					Get a free quote
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* .btn  {
+    @apply transition-colors duration-200 ease-in-out;
+  } */
+
+  .centered {
+    @apply flex justify-center items-center;
+  }
+
+  .link {
+    @apply text-sky-500 hover:underline hover:text-sky-600;
+  }
+}
+
+html {
+  color: #111;
+  background: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/**
+ * For some reason the font needs to be set on the body to be global. Doesn't
+ * work when set on the html element or tailwind config.
+ */
+body {
+  font-family: 'Open sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
