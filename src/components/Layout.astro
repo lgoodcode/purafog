@@ -2,11 +2,14 @@
 import Navbar from './Navbar.astro'
 import '@/styles/globals.css'
 import '@/styles/fonts.css'
+
+const { title } = Astro.props
 ---
 
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<title>{title}</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta
@@ -24,8 +27,6 @@ import '@/styles/fonts.css'
 
 		<!-- On hover of nav element, prefetch it -->
 		<!-- <link rel="prefetch" type="text/html" href="https://purafog.com/our-services/"> -->
-
-		<slot name="title" />
 	</head>
 	<body>
 		<Navbar />
