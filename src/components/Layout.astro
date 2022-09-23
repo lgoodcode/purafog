@@ -1,5 +1,6 @@
 ---
 import Navbar from './Navbar.astro'
+import Footer from './Footer.astro'
 import '@/styles/globals.css'
 import '@/styles/fonts.css'
 
@@ -28,8 +29,9 @@ const { title } = Astro.props
 		<!-- On hover of nav element, prefetch it -->
 		<!-- <link rel="prefetch" type="text/html" href="https://purafog.com/our-services/"> -->
 	</head>
-	<body>
+	<body class="overflow-x-hidden">
 		<Navbar />
 		<slot />
+		<Footer />
 	</body>
 </html>

@@ -1,0 +1,3 @@
+# Allow bots to scan and index the entire site.
+User-agent: *
+Allow: /
