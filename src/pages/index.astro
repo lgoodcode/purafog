@@ -1,9 +1,12 @@
 ---
 import { Image } from '@astrojs/image/components'
 import Layout from '@/components/Layout.astro'
+import '@/styles/carousel.css'
 ---
 
 <Layout title="PURaFOG">
+	<script defer is:inline src="/carousel.js"></script>
+
 	<main>
 		<section class="relative w-full h-full">
 			<div class="absolute w-full h-full inset-0">
@@ -16,7 +19,9 @@ import Layout from '@/components/Layout.astro'
 				/>
 			</div>
 			<div class="mx-auto py-24 relative max-w-6xl">
-				<div class="flex flex-col px-10 py-12 gap-4 rounded-xl bg-white max-w-md">
+				<div
+					class="flex flex-col mx-4 md:mx-8 lg:mx-0 px-10 py-12 gap-4 rounded-xl bg-white max-w-md"
+				>
 					<div>
 						<h3 class="text-3xl font-bold text-gray-600">Got a mold problem? Get it fixed fast!</h3>
 					</div>
@@ -50,48 +55,189 @@ import Layout from '@/components/Layout.astro'
 			</div>
 		</section>
 
-		<section>
-			<div class="w-full mx-auto py-12 px-32">
-				<Image
-					src="/img/services-section.webp"
-					class="left-10 object-cover"
-					alt="section"
-					width="2440"
-					height="1080"
-				/>
+		<section class="py-8 lg:py-32">
+			<div class="mobile lg:hidden">
+				<div class="carousel-wrapper">
+					<div class="carousel">
+						<div class="carousel-button-next"></div>
+						<div class="carousel-button-prev"></div>
+
+						<div class="service-item carousel-item initial">
+							<Image
+								src="/img/services-1.png"
+								class="opacity-90"
+								alt="Mold remediation"
+								width="360"
+								height="360"
+							/>
+							<div
+								class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] top-[55%] left-[50%]"
+							>
+								<div class="flex flex-col font-bold text-gray-500 text-center">
+									<span class="capitalize">Mold</span>
+									<span class="capitalize">Remediation</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="service-item carousel-item">
+							<Image
+								src="/img/services-2.png"
+								class="opacity-90"
+								alt="Odor"
+								width="275"
+								height="275"
+							/>
+							<div
+								class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] top-[55%] left-[60%]"
+							>
+								<div class="flex flex-col font-bold text-gray-500 text-center">
+									<span class="capitalize">Odor</span>
+									<span class="capitalize">Elimination</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="service-item carousel-item">
+							<Image
+								src="/img/services-3.png"
+								class="opacity-90"
+								alt="Virus"
+								width="315"
+								height="315"
+							/>
+							<div
+								class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] top-[55%] left-[50%]"
+							>
+								<div class="flex flex-col font-bold text-gray-500 text-center">
+									<span class="capitalize">Virus</span>
+									<span class="capitalize">Sterilization</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="service-item carousel-item">
+							<Image
+								src="/img/services-4.png"
+								class="opacity-90"
+								alt="Air quality"
+								width="315"
+								height="315"
+							/>
+							<div
+								class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] top-[55%] left-[60%]"
+							>
+								<div class="flex flex-col font-bold text-gray-500 text-center">
+									<span class="capitalize">Air</span>
+									<span class="capitalize">Quality</span>
+									<span class="capitalize">Testing</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<!-- <div class="service-item">
-				<div>
-					<Image
-						src="/img/services-1.webp"
-						class="opacity-90"
-						alt="Mold remediation"
-						width="360"
-						height="360"
-					/>
+
+			<div class="hidden lg:flex w-full mx-auto px-36">
+				<div class="service-item relative">
+					<div class="relative top-[10%]">
+						<Image
+							src="/img/services-1.png"
+							class="opacity-90"
+							alt="Mold remediation"
+							width="360"
+							height="360"
+						/>
+					</div>
+					<div
+						class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] left-[82%] top-[50%]"
+					>
+						<div class="flex flex-col font-bold text-gray-500 text-center">
+							<span class="capitalize">Mold</span>
+							<span class="capitalize">Remediation</span>
+						</div>
+					</div>
 				</div>
-				<div class="">
-					<span class="capitalize">Mold remediation</span>
+
+				<div class="service-item relative">
+					<div class="relative left-[50%]">
+						<Image
+							src="/img/services-2.png"
+							class="opacity-90"
+							alt="Odor"
+							width="275"
+							height="275"
+						/>
+					</div>
+					<div
+						class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] left-[20%] top-[-15%]"
+					>
+						<div class="flex flex-col font-bold text-gray-500 text-center">
+							<span class="capitalize">Odor</span>
+							<span class="capitalize">Elimination</span>
+						</div>
+					</div>
 				</div>
-			</div> -->
+
+				<div class="service-item relative">
+					<div class="relative left-[25%] top-[45%]">
+						<Image
+							src="/img/services-3.png"
+							class="opacity-90"
+							alt="Virus"
+							width="315"
+							height="315"
+						/>
+					</div>
+					<div
+						class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] left-[110%] top-[70%]"
+					>
+						<div class="flex flex-col font-bold text-gray-500 text-center">
+							<span class="capitalize">Virus</span>
+							<span class="capitalize">Sterilization</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="service-item relative">
+					<div class="relative left-[25%] top-[-25%]">
+						<Image
+							src="/img/services-4.png"
+							class="opacity-90"
+							alt="Air quality"
+							width="315"
+							height="315"
+						/>
+					</div>
+					<div
+						class="centered absolute bg-[url('/img/bubble.png')] h-[150px] w-[150px] left-[-10%] top-[-10%]"
+					>
+						<div class="flex flex-col font-bold text-gray-500 text-center">
+							<span class="capitalize">Air</span>
+							<span class="capitalize">Quality</span>
+							<span class="capitalize">Testing</span>
+						</div>
+					</div>
+				</div>
+			</div>
 		</section>
 
 		<section class="pt-24">
 			<div class="relative flex overflow-hidden">
-				<div class="absolute -bottom-1 -z-10 left-[5%] w-full">
-					<Image src="/img/headache.webp" class="w-full" alt="headache" width="1920" height="360" />
+				<div class="absolute hidden lg:block -bottom-1 -z-10 left-[5%] w-full">
+					<Image src="/img/headache.png" class="w-full" alt="headache" width="1920" height="360" />
 				</div>
 				<div class="w-full pb-8">
-					<div class="max-w-3xl flex flex-col gap-6 relative left-[40%]">
+					<div class="lg:max-w-3xl px-4 lg:px-0 flex flex-col gap-6 relative lg:left-[40%]">
 						<div>
-							<h3 class="text-2xl font-semibold text-gray-700">
+							<h3 class="text-2xl px-4 font-semibold text-gray-700">
 								Are you suffering from Health Issues? Constant headaches, bad sleep patterns, itchy
 								eyes, fatigue? Did your doctor suggest Mold Remediation? Are you Allergic to
 								Mold?……WE CAN HELP!
 							</h3>
 						</div>
 						<div>
-							<div class="grid grid-cols-2 gap-4 px-4 text-gray-600">
+							<div class="flex flex-col lg:grid lg:grid-cols-2 gap-4 px-4 text-gray-600">
 								<div class="col-span1 flex flex-col gap-4">
 									<div class="flex flex-row">
 										<div class="mr-2">
@@ -160,11 +306,13 @@ import Layout from '@/components/Layout.astro'
 			</div>
 		</section>
 
-		<section class="bg-gradient-to-b from-green-700 to-green-500 py-8">
-			<div class="flex justify-between items-center max-w-6xl mx-auto">
-				<h1 class="text-4xl text-white font-bold">Let's Get Started with your Free Quote!</h1>
+		<section class="bg-gradient-to-b px-4 lg:px-0 from-green-700 to-green-500 py-8">
+			<div class="flex flex-col lg:flex-row justify-between items-center max-w-6xl mx-auto">
+				<h1 class="text-4xl text-white text-center lg:text-left font-bold">
+					Let's Get Started with your Free Quote!
+				</h1>
 				<button
-					class="text-2xl bg-white hover:bg-gray-100 rounded-md font-semibold text-gray-600 px-12 py-3 uppercase"
+					class="text-2xl bg-white mt-6 lg:mt-0 hover:bg-gray-100 rounded-md font-semibold text-gray-600 px-12 py-3 uppercase"
 					>Get a quote</button
 				>
 			</div>
