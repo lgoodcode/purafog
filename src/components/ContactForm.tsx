@@ -1,70 +1,35 @@
-// import DOMPurify from 'dompurify'
-import { useForm, type Validations } from '@/utils/useForm'
+import { useState } from 'preact/hooks'
 import PulseSpinner from '@/components/PulseSpinner'
+import { useForm } from '@/utils/useForm'
+import sanitize from '@/utils/sanitize'
+import validations from '@/utils/validations'
+import type { Contact } from '@/types/contact'
 import Input from './Input'
 import TextArea from './TextArea'
-// import type { EmailResponse } from 'types/Email'
 
-type Contact = Record<'firstName' | 'lastName' | 'email' | 'phone' | 'message', string>
-
-const regexp = {
-	name: /^[a-zA-Z ]+$/,
-	email:
-		/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
-	phone: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im,
-	message: /[a-zA-Z]+/,
-}
-
-const validations: Validations<Contact> = {
-	firstName: {
-		required: 'Must enter your first name',
-		pattern: {
-			value: regexp.name,
-			message: 'Please enter a valid name',
-		},
-	},
-	lastName: {
-		required: 'Must enter your last name',
-		pattern: {
-			value: regexp.name,
-			message: 'Please enter a valid name',
-		},
-	},
-	email: {
-		required: 'Must enter your email address',
-		pattern: {
-			value: regexp.email,
-			message: 'Please enter a valid email address',
-		},
-	},
-	phone: {
-		pattern: {
-			value: regexp.phone,
-			message: 'Please enter a valid phone number',
-		},
-	},
-	message: {
-		required: "Please enter a brief message of what you're inquiring on",
-		pattern: {
-			value: regexp.message,
-			message: 'Please enter a valid message',
-		},
-	},
-}
-
-function ContactForm() {
-	const { submitting, register, handleSubmit } = useForm<Contact>({
+export default function ContactForm() {
+	const [serverError, setServerError] = useState('')
+	const { submitting, submitted, register, handleSubmit } = useForm<Contact>({
 		validations,
-		// sanitizeFn: DOMPurify.sanitize,
+		sanitizeFn: sanitize,
 		onSubmit: async (data) => {
-			console.log('submit', data)
-			return Promise.resolve(true)
-			// try {
-			// 	return (await post<EmailResponse>('/contact', data)).data.success
-			// } catch (err) {
-			// 	console.error(err)
-			// 	return false
-			// }
+			try {
+				const res = await fetch('/.netlify/functions/contact', {
+					method: 'POST',
+					body: JSON.stringify(data),
+				})
+
+				if (!res.ok) {
+					throw new Error(await res.json())
+				}
+
+				return true
+			} catch (_err) {
+				const err = _err as Error
+				console.error(err)
+				setServerError('Something went wrong, please try again later')
+				return false
+			}
 		},
 	})
 
@@ -97,11 +62,16 @@ function ContactForm() {
 							Enter your contact info and we will get back to as soon as possible!
 						</span>
 					</div>
-					{/* {serverError && (
-							<div className="mb-4 sm:mb-6 bg-red-500 py-4 rounded-md text-center">
-								<h3 className="text2xl text-white">{serverError}</h3>
-							</div>
-						)} */}
+					{serverError && (
+						<div className="mb-4 sm:mb-6 bg-red-500 py-4 rounded-md text-center">
+							<h3 className="text2xl text-white">{serverError}</h3>
+						</div>
+					)}
+					{submitted && (
+						<div className="mb-4 sm:mb-6 bg-green-500 py-4 rounded-md text-center">
+							<h3 className="text2xl text-white">Message successfully sent!</h3>
+						</div>
+					)}
 					<div className="flex flex-col gap-2">
 						<Input
 							name="firstName"
@@ -138,7 +108,8 @@ function ContactForm() {
 					<div className="py-4 mt-4">
 						<button
 							type="submit"
-							className="w-full px-2 py-4 rounded-md text-white text-lg font-semibold uppercase bg-green-600 hover:bg-green-700"
+							disabled={submitting || submitted}
+							className="w-full px-2 py-4 rounded-md text-white text-lg font-semibold uppercase bg-green-600 hover:bg-green-700 disabled:bg-green-900 disabled:text-gray-300"
 						>
 							Send message
 						</button>
@@ -148,5 +119,3 @@ function ContactForm() {
 		</div>
 	)
 }
-
-export default ContactForm

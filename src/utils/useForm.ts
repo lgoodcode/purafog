@@ -72,6 +72,10 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		let valid = true
 		let error = ''
 
+		// If not required and no input, skip validation
+		if (!required && !value) {
+			return { valid, error }
+		}
 		// We want the first error message to be the requirement because
 		// it will probably fail the regexp test if empty
 		if (required && !value) {
@@ -124,7 +128,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	 * @param key the key of the field to validate
 	 * @returns void
 	 */
-	const handleBlur = (key: keyof T) => () => {
+	const handleBlur = (key: keyof T) => (e: any) => {
 		// If no validations
 		// OR validate on blur AND there is no input
 		// OR validate on blur only after the form has attempted to submit is set
@@ -140,7 +144,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		// Reset the error for the key
 		delete errors[key]
 		// Validate the key field
-		const { valid, error } = validate(key)
+		const { valid, error } = validate(key, e.target.value)
 		// If the field is valid, remove the error
 		if (valid) {
 			setErrors({ ...errors })
@@ -164,6 +168,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	})
 
 	const handleSubmit = async (e: any) => {
+		debugger
 		e.preventDefault()
 
 		if (options?.validations) {
@@ -176,7 +181,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 			let isValid = true
 
 			for (const key in validations) {
-				const { valid, error } = validate(key)
+				const { valid, error } = validate(key, data[key])
 
 				if (!valid) {
 					isValid = false

@@ -4,8 +4,8 @@ export type InputProps = {
 	type?: 'text' | 'email' | 'password'
 	placeholder?: boolean
 	required?: boolean
-	onChange?: (e: any) => void
-	onBlur?: () => void
+	onChange?: (e?: any) => void
+	onBlur?: (e?: any) => void
 	error?: string
 	bg?: string
 }

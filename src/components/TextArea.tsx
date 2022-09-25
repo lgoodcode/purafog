@@ -4,8 +4,8 @@ export type TextAreaProps = {
 	height?: string
 	placeholder?: string
 	required?: boolean
-	onChange?: (e: any) => void
-	onBlur?: () => void
+	onChange?: (e?: any) => void
+	onBlur?: (e?: any) => void
 	error?: string
 	bg?: string
 }
@@ -29,7 +29,7 @@ export default function TextArea({
 					id={name}
 					onInput={onChange}
 					onBlur={onBlur}
-					placeholder={placeholder + (required ? '*' : '')}
+					placeholder={(placeholder || label) + (required ? '*' : '')}
 					className={[
 						height ? height : 'h-24',
 						'peer',

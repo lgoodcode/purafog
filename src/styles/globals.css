@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  button {
+    @apply disabled:cursor-not-allowed
+  }
+}
+
 @layer utilities {
-  /* .btn  {
+  .btn  {
     @apply transition-colors duration-200 ease-in-out;
-  } */
+  }
 
   .centered {
     @apply flex justify-center items-center;
