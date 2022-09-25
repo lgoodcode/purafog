@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks'
+import confetti from 'canvas-confetti'
 import PulseSpinner from '@/components/PulseSpinner'
 import { useForm } from '@/utils/useForm'
 import sanitize from '@/utils/sanitize'
@@ -22,6 +23,16 @@ export default function ContactForm() {
 				if (!res.ok) {
 					throw new Error(await res.json())
 				}
+
+				const canvas = document.getElementById('confetti') as HTMLCanvasElement
+				confetti.create(canvas, {
+					resize: true,
+					useWorker: true,
+				})({
+					particleCount: 200,
+					spread: 80,
+					origin: { y: 0.6 },
+				})
 
 				return true
 			} catch (_err) {
@@ -51,6 +62,8 @@ export default function ContactForm() {
 				>
 					<PulseSpinner />
 				</div>
+
+				<canvas id="confetti" className="absolute w-full h-full mx-auto"></canvas>
 
 				<form
 					onSubmit={handleSubmit}
