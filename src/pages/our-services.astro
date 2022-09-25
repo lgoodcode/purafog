@@ -1,5 +1,269 @@
 ---
+import { Image } from '@astrojs/image/components'
 import Layout from '@/components/Layout.astro'
+import Banner from '@/components/Banner.astro'
 ---
 
-<Layout title="Our Services - PURaFOG" />
+<Layout title="Our Services - PURaFOG">
+	<Banner title="What we do?" />
+	<main>
+		<div class="px-60">
+			<section class="py-16 mt-8 centered">
+				<div class="centered gap-8">
+					<div
+						class="pt-16 pb-12 px-6 w-[280px] h-[360px] rounded-xl bg-gradient-to-b from-green-500 to-green-800"
+					>
+						<div class="text-center text-white flex flex-col gap-2">
+							<h3 class="text-2xl font-semibold capitalize">Mold remediation</h3>
+							<p class="text-gray-50">
+								Our atomized dry mist will eradicate molds, fungal matter, bacteria and viruses. We
+								use an antifungal and antimicrobial treatments to eliminate mold colonies from
+								forming.
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="pt-16 pb-12 px-6 w-[280px] h-[360px] rounded-xl bg-gradient-to-b from-green-500 to-green-800"
+					>
+						<div class="text-center text-white flex flex-col gap-2">
+							<h3 class="text-2xl font-semibold capitalize">Virus sterilization</h3>
+							<p class="text-gray-50">
+								We use an organic hospital grade disinfectant to kill viruses that keeps your home
+								or business sanitized. Our product is listed on the EPA List N for killing human
+								coronavirus.
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="pt-16 pb-12 px-6 w-[280px] h-[360px] rounded-xl bg-gradient-to-b from-green-500 to-green-800"
+					>
+						<div class="text-center text-white flex flex-col gap-2">
+							<h3 class="text-2xl font-semibold capitalize">Odor Elimination</h3>
+							<p class="text-gray-50">
+								Our product works through an oxidation chemical reaction that kills bacteria and
+								fungus that causes odors. More specifically, it reacts on contact with the enzymes
+								and proteins that make up simple cell organisms.
+							</p>
+						</div>
+					</div>
+
+					<div
+						class="pt-16 pb-12 px-6 w-[280px] h-[360px] rounded-xl bg-gradient-to-b from-green-500 to-green-800"
+					>
+						<div class="text-center text-white flex flex-col gap-2">
+							<h3 class="text-2xl font-semibold capitalize">Air Quality</h3>
+							<p class="text-gray-50">
+								We provide indoor air quality testing that we send to a 3rd party lab that
+								specializes in analyzing samples to identify mold, bacteria, asbestos, and radon.
+								These results help us make important decisions about the indoor environment
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<div class="grid grid-cols-3">
+					<div class="col-span-2 px-8 flex flex-col gap-8">
+						<h2 class="text-3xl mb-4 text-gray-600 font-semibold tracking-wide">
+							Did you know that mold can be found almost everywhere? Mold grows naturally outside,
+							but it can also grow almost anywhere indoors if moisture is present.
+						</h2>
+
+						<div>
+							<div class="pb-6 border-b border-b-gray-400 flex gap-4">
+								<div>
+									<Image
+										src="/img/green-checkmark.webp"
+										alt="green checkmark"
+										class="max-w-[34px]"
+										width="128"
+										height="128"
+									/>
+								</div>
+								<span class="text-lg text-gray-600">
+									We kill molds, allergens, toxins, viruses, pathogens.
+								</span>
+							</div>
+						</div>
+
+						<div>
+							<div class="pb-6 border-b border-b-gray-400 centered gap-4">
+								<div>
+									<Image
+										src="/img/green-checkmark.webp"
+										alt="green checkmark"
+										class="max-w-[34px]"
+										width="128"
+										height="128"
+									/>
+								</div>
+								<span class="text-lg text-gray-600">
+									We use an organic atomized dry mist that makes your air quality PURE again. This
+									process requires no tearing down walls, just a few hours to get your house back to
+									a healthy environment!
+								</span>
+							</div>
+						</div>
+
+						<div>
+							<div class="pb-6 border-b border-b-gray-400 centered gap-4">
+								<div>
+									<Image
+										src="/img/green-checkmark.webp"
+										alt="green checkmark"
+										class="max-w-[34px]"
+										width="128"
+										height="128"
+									/>
+								</div>
+								<span class="text-lg text-gray-600">
+									We use a Dry-mist disinfection system that disinfects the air and surfaces in
+									enclosed areas by using chemical interaction of hydrogen peroxide. The different
+									combination of hydrogen peroxide and positively charged ions offers the 99.99%
+									kill rate. We complete the process by applying an antimicrobial surface protectant
+									that provides continual protection for 90 days + Our formula has shown to
+									eliminate a broad range of viruses and bacteria including superbugs like MRSA,
+									H1N1, and Coronavirus variants –leaving behind a completely sterile environment.
+								</span>
+							</div>
+						</div>
+
+						<div>
+							<div class="pb-6 centered gap-4">
+								<div>
+									<Image
+										src="/img/green-checkmark.webp"
+										alt="green checkmark"
+										class="max-w-[34px]"
+										width="128"
+										height="128"
+									/>
+								</div>
+								<span class="text-lg text-gray-600">
+									We use an OMRI Listed, commercial sanitizer and disinfectant for use against human
+									and plant pathogens, it is also kills the human coronavirus on surfaces.This
+									organic product inhibits the growth of algae, bacteria, mold and mildew on hard,
+									non-porous surfaces.
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-span-1 centered px-12 flex-col gap-12">
+						<div
+							class="text-gray-100 flex flex-col gap-4 px-8 py-12 rounded-lg shadow-xl bg-gradient-to-b from-green-500 to-green-800"
+						>
+							<h2 class="text-2xl font-semibold text-center">How Can We Help?</h2>
+
+							<div class="h-[1px] bg-gray-300"></div>
+
+							<div class="flex flex-col gap-2">
+								<div class="flex gap-3">
+									<svg
+										class="fill-gray-100 w-16 h-16"
+										xmlns="http://www.w3.org/2000/svg"
+										width="32"
+										height="32"
+										viewBox="0 0 512 512"
+									>
+										<path
+											d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"
+										></path>
+									</svg>
+									<span class="font-medium">
+										<a href="tel:833-364-6653">833-364-6653 aka 833-FOG-MOLD (Call or text)</a>
+									</span>
+								</div>
+
+								<div class="flex items-center gap-4">
+									<svg
+										class="fill-gray-100"
+										xmlns="http://www.w3.org/2000/svg"
+										width="32"
+										height="32"
+										viewBox="0 0 512 512"
+									>
+										<path
+											d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"
+										></path>
+									</svg>
+									<a href="mailto:lisa@purafog.com" class="font-medium">Lisa@purafog.com</a>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							<Image
+								src="/img/omri.png"
+								width="320"
+								height="128"
+								alt="OMRI logo"
+								style={{
+									filter:
+										'brightness(100%) contrast(100%) saturate(100%) blur(0px) hue-rotate(20deg)',
+								}}
+							/>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="py-16 mt-32 grid grid-cols-2 gap-8 border-t border-gray-300">
+				<div class="col-span-1 centered gap-8">
+					<div>
+						<Image src="/img/nsf.png" width="160" height="160" alt="NSF Sustainability Certified" />
+					</div>
+					<div>
+						<Image
+							src="/img/epa.png"
+							width="160"
+							height="160"
+							alt="EPA Environmental Protection Agency"
+						/>
+					</div>
+					<div>
+						<Image src="/img/made-in-usa.jpg" width="160" height="160" alt="Made in the USA" />
+					</div>
+				</div>
+
+				<div class="col-span-1 flex flex-col gap-8 px-4">
+					<div class="pb-6 border-b border-b-gray-400 centered gap-4">
+						<div>
+							<Image
+								src="/img/green-checkmark.webp"
+								alt="green checkmark"
+								class="max-w-[34px]"
+								width="128"
+								height="128"
+							/>
+						</div>
+						<span class="text-lg text-gray-600">
+							Anti-microbial technology that provides persistent and continuous protection of a
+							surface for up to 90 days that inhibits the growth of odor causing, and stain causing
+							bacteria, mold, mildew, fungi, viruses and algae.
+						</span>
+					</div>
+
+					<div class="pb-6 border-b border-b-gray-400 centered gap-4">
+						<div>
+							<Image
+								src="/img/green-checkmark.webp"
+								alt="green checkmark"
+								class="max-w-[34px]"
+								width="128"
+								height="128"
+							/>
+						</div>
+						<span class="text-lg text-gray-600">
+							Air Quality Testing can be taken. The cartridges are sent to a 3rd party lab, these
+							results show the type and counts in your air.
+						</span>
+					</div>
+				</div>
+			</section>
+		</div>
+	</main>
+</Layout>
