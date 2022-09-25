@@ -1,0 +1,11 @@
+---
+export interface Props {
+	title: string
+}
+
+const { title } = Astro.props
+---
+
+<div class="banner bg-green-600 py-14 text-center">
+	<h1 class="text-5xl text-white font-bold uppercase tracking-wider font-['inter']">{title}</h1>
+</div>

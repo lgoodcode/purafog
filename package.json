@@ -18,6 +18,7 @@
     "@astrojs/preact": "^1.1.0",
     "@astrojs/sitemap": "^1.0.0",
     "@astrojs/tailwind": "^2.0.1",
+    "@netlify/functions": "^1.2.0",
     "@preact/signals": "^1.1.1",
     "astro": "^1.2.8",
     "preact": "^10.11.0",
