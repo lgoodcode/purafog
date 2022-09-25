@@ -4,15 +4,25 @@ import validations from '@/utils/validations'
 import type { Contact } from '@/types/contact'
 
 const KEYS: (keyof Contact)[] = ['firstName', 'lastName', 'email', 'message']
+const headers = {
+	'Content-Type': 'application/json',
+}
 
 const handler: Handler = async ({ httpMethod, body }) => {
+	console.log(body)
 	if (httpMethod !== 'POST') {
+		console.error(`Method ${httpMethod} not allowed`)
+
 		return {
+			headers,
 			statusCode: 405,
 			body: JSON.stringify({ error: 'Method Not Allowed' }),
 		}
 	} else if (!body) {
+		console.error('No body')
+
 		return {
+			headers,
 			statusCode: 400,
 			body: JSON.stringify({ error: 'Missing data in body' }),
 		}
@@ -21,14 +31,18 @@ const handler: Handler = async ({ httpMethod, body }) => {
 	try {
 		const data = JSON.parse(body) as Contact
 		const keysFound = Object.keys(data)
-		// If there are a difference in the keys found and the keys we expect,
-		if (keysFound.length !== KEYS.length) {
+		// If we don't have all the required properties
+		if (keysFound.every((key) => KEYS.includes(key as keyof Contact))) {
+			const missing = KEYS.filter((key) => !keysFound.includes(key))
+
+			console.error(`Missing keys: ${missing.join(', ')}`)
+
 			return {
+				headers,
 				statusCode: 400,
 				body: JSON.stringify({
-					// Set the error to have a property of the missing keys and keys that
-					// were not expected
-					errors: { missing: KEYS.filter((key) => !keysFound.includes(key)) },
+					// Set the error to have a property of an array of the missing keys
+					errors: { missing },
 				}),
 			}
 		}
@@ -47,13 +61,14 @@ const handler: Handler = async ({ httpMethod, body }) => {
 			} else {
 				result[key] = sanitize(value)
 			}
-
-			keysFound.push(key)
 		}
 
 		// If any errors were found, return the error response
 		if (Object.keys(errors).length) {
+			console.error(`Errors: ${JSON.stringify(errors)}`)
+
 			return {
+				headers,
 				statusCode: 400,
 				body: JSON.stringify({ errors }),
 			}
@@ -65,7 +80,9 @@ const handler: Handler = async ({ httpMethod, body }) => {
 		// This is catching an error when calling JSON.parse(body)
 	} catch (err) {
 		console.error(err)
+
 		return {
+			headers,
 			statusCode: 500,
 			body: JSON.stringify({ error: 'Something wrong happened. Probs bad JSON input' }),
 		}

@@ -45,6 +45,9 @@ export type SubmitHandler<T> = (data: Partial<T>) => Promise<boolean>
  * form has not been submitted yet
  * @member {boolean} validateChangeWithoutSubmit - Validate input on change
  * even if the form has not been submitted yet
+ * @member {boolean} debounce - Debounce or throttle the handleChange function
+ * @member {number} debounceTime - The time in milliseconds to debounce the
+ * handleChange function
  */
 export type FormOptions<T> = {
 	initialValues?: Partial<T>
@@ -53,6 +56,8 @@ export type FormOptions<T> = {
 	sanitizeFn?: (value: string) => string
 	validateBlurWithoutSubmit?: boolean
 	validateChangeWithoutSubmit?: boolean
+	debounce?: boolean
+	debounceTime?: number
 }
 
 export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions<T>) => {
@@ -64,7 +69,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	// keys from the data type passed in with string values for error messages
 	const [errors, setErrors] = useState<ErrorRecord<T>>({})
 	const [status, setStatus] = useState<SubmitStatus>('none')
-	const [validated, setValidated] = useState(false)
+	const [attempted, setAttempted] = useState(false)
 	const [submitted, setSubmitted] = useState(false)
 
 	const validate = (key: keyof T, value: T[typeof key] = data[key]) => {
@@ -101,22 +106,31 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		}
 	}
 
-	// Handles any change to the input elements by setting the data and
-	// sanitizes the input, if a sanitize function is given.
-	// Has a debounce function to prevent too many renders by delaying the
-	// function call
+	/**
+	 * Handles any change to the input elements by setting the data and
+	 * sanitizes the input, if a sanitize function is given.
+	 * Has a debounce function to prevent too many renders by delaying the
+	 * function call. It is disabled by default to allow autocomplete to work
+	 * properly
+	 *
+	 * @param key the key of the field to update
+	 */
 	const handleChange = (key: keyof T) =>
-		debounce((e: any) => {
-			setData({
-				...data,
-				[key]: options?.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
-			})
-			// If we can validate without a form submission or if the form has been submitted
-			// then we can always validate on change
-			if (options?.validateChangeWithoutSubmit || validated) {
-				setErrors({ ...errors, [key]: validate(key, e.target.value).error })
-			}
-		})
+		debounce(
+			(e: any) => {
+				// Access previous data to prevent race conditions
+				setData((prevData) => ({
+					...prevData,
+					[key]: options?.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
+				}))
+				// If we can validate without a form submission or if the form has been submitted
+				// then we can always validate on change
+				if (options?.validateChangeWithoutSubmit || attempted) {
+					setErrors({ ...errors, [key]: validate(key, e.target.value).error })
+				}
+			},
+			options?.debounce ? options?.debounceTime : 0
+		)
 
 	/**
 	 * Validates the input field when leaving focus of the element.
@@ -129,6 +143,14 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	 * @returns void
 	 */
 	const handleBlur = (key: keyof T) => (e: any) => {
+		// Need to set the data on blur for autocompleted values
+		if (e.target.value) {
+			setData({
+				...data,
+				[key]: options?.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
+			})
+		}
+
 		// If no validations
 		// OR validate on blur AND there is no input
 		// OR validate on blur only after the form has attempted to submit is set
@@ -136,7 +158,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		if (
 			!options?.validations ||
 			(options?.validateBlurWithoutSubmit && !data[key]) ||
-			(!options?.validateBlurWithoutSubmit && !validated)
+			(!options?.validateBlurWithoutSubmit && !attempted)
 		) {
 			return
 		}
@@ -171,8 +193,8 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		e.preventDefault()
 
 		if (options?.validations) {
-			if (!validated) {
-				setValidated(true)
+			if (!attempted) {
+				setAttempted(true)
 			}
 
 			const { validations } = options

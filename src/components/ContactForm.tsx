@@ -14,17 +14,23 @@ export default function ContactForm() {
 		validations,
 		sanitizeFn: sanitize,
 		onSubmit: async (data) => {
+			console.log(data)
 			try {
 				const res = await fetch('/.netlify/functions/contact', {
 					method: 'POST',
 					body: JSON.stringify(data),
+					headers: {
+						'Content-Type': 'application/json',
+					},
 				})
 
 				if (!res.ok) {
-					throw new Error(await res.json())
+					throw new Error(JSON.stringify(await res.json()))
 				}
 
 				const canvas = document.getElementById('confetti') as HTMLCanvasElement
+				// Make the confetti on top and prevent access to form
+				canvas.style.zIndex = '999'
 				confetti.create(canvas, {
 					resize: true,
 					useWorker: true,
@@ -37,6 +43,7 @@ export default function ContactForm() {
 				return true
 			} catch (_err) {
 				const err = _err as Error
+				debugger
 				console.error(err)
 				setServerError('Something went wrong, please try again later')
 				return false
