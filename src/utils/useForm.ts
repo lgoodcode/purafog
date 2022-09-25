@@ -168,7 +168,6 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	})
 
 	const handleSubmit = async (e: any) => {
-		debugger
 		e.preventDefault()
 
 		if (options?.validations) {

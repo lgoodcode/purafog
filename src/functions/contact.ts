@@ -11,18 +11,32 @@ const handler: Handler = async ({ httpMethod, body }) => {
 			statusCode: 405,
 			body: JSON.stringify({ error: 'Method Not Allowed' }),
 		}
-	} else if (!body)
+	} else if (!body) {
 		return {
 			statusCode: 400,
 			body: JSON.stringify({ error: 'Missing data in body' }),
 		}
-
-	const errors: Partial<Record<keyof Contact, string>> = {}
-	const data: Partial<Contact> = {}
-	const keysFound: (keyof Contact)[] = []
+	}
 
 	try {
-		for (const [key, value] of Object.entries(JSON.parse(body)) as [keyof Contact, string][]) {
+		const data = JSON.parse(body) as Contact
+		const keysFound = Object.keys(data)
+		// If there are a difference in the keys found and the keys we expect,
+		if (keysFound.length !== KEYS.length) {
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					// Set the error to have a property of the missing keys and keys that
+					// were not expected
+					errors: { missing: KEYS.filter((key) => !keysFound.includes(key)) },
+				}),
+			}
+		}
+
+		const errors: Partial<Record<keyof Contact, string>> = {}
+		const result: Partial<Contact> = {}
+
+		for (const [key, value] of Object.entries(data) as [keyof Contact, string][]) {
 			const required = validations[key]?.required
 			const pattern = validations[key]?.pattern
 
@@ -31,34 +45,29 @@ const handler: Handler = async ({ httpMethod, body }) => {
 			} else if (pattern && !pattern.value.test(value)) {
 				errors[key] = `Invalid ${key}: failed pattern test`
 			} else {
-				data[key] = sanitize(value)
+				result[key] = sanitize(value)
 			}
 
 			keysFound.push(key)
 		}
 
+		// If any errors were found, return the error response
 		if (Object.keys(errors).length) {
 			return {
 				statusCode: 400,
 				body: JSON.stringify({ errors }),
 			}
-		} else if (keysFound.length !== KEYS.length) {
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					errors: { missing: KEYS.filter((key) => !keysFound.includes(key)) },
-				}),
-			}
 		}
 
 		// TODO: Send email
 
-		return { statusCode: 201, body: JSON.stringify({ data }) }
+		return { statusCode: 201, body: JSON.stringify({ ...data }) }
+		// This is catching an error when calling JSON.parse(body)
 	} catch (err) {
 		console.error(err)
 		return {
 			statusCode: 500,
-			body: JSON.stringify({ error: 'Something wrong happened' }),
+			body: JSON.stringify({ error: 'Something wrong happened. Probs bad JSON input' }),
 		}
 	}
 }
