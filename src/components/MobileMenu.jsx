@@ -29,7 +29,7 @@ export default function MobileMenu({ routes, path }) {
 					'left-0',
 					'top-[248px]',
 					'md:top-[200px]',
-					'z-10',
+					'z-50',
 					'transition-transform',
 					'duration-200',
 					'ease-in-out',

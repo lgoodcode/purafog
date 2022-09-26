@@ -7,15 +7,17 @@ import ContactForm from '@/components/ContactForm'
 <Layout title="Contact Us - PURaFOG">
 	<Banner title="Contact Us" />
 	<main>
-		<section class="py-16 pb-32 mt-8 centered gap-32">
-			<div class="flex flex-col gap-8">
+		<section class="py-16 pb-32 mt-8 centered flex-col lg:flex-row gap-32">
+			<div class="flex flex-col lg:gap-8">
 				<div class="text-center">
-					<h2 class="text-4xl capitalize font-bold text-gray-600">Let's talk. but you first!</h2>
+					<h2 class="text-4xl capitalize font-bold text-gray-600">
+						Let's talk. <br class="lg:hidden" />but you first!
+					</h2>
 				</div>
 				<ContactForm client:visible />
 			</div>
 
-			<div class="shadow-lg rounded-md bg-gray-50">
+			<div class="shadow-lg rounded-md bg-gray-100 mx-4">
 				<div class="flex flex-col gap-8 px-8 py-12">
 					<div class="flex gap-4">
 						<svg

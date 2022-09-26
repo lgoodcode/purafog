@@ -43,7 +43,6 @@ export default function ContactForm() {
 				return true
 			} catch (_err) {
 				const err = _err as Error
-				debugger
 				console.error(err)
 				setServerError('Something went wrong, please try again later')
 				return false
@@ -52,7 +51,7 @@ export default function ContactForm() {
 	})
 
 	return (
-		<div className="container max-w-sm sm:max-w-lg my-8 lg:my-0 bg-gray-50">
+		<div className="container max-w-sm sm:max-w-lg my-2 lg:my-0 bg-gray-100">
 			<div className="form-container relative w-full rounded-xl shadow-lg bg-blackAlpha-600">
 				<div
 					className={[
