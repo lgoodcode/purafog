@@ -60,7 +60,7 @@ export default function MobileMenu({ routes, path }) {
 										'w-full',
 										'text-lg',
 										'font-bold',
-										'text-gray-600',
+										path === route.path ? 'text-green-600' : 'text-gray-600',
 										'border-b-4',
 										'border-b-transparent',
 										path === route.path ? 'border-b-green-600' : '',

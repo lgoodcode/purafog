@@ -74,7 +74,7 @@ export default function ContactForm() {
 				<form
 					onSubmit={handleSubmit}
 					noValidate
-					className="relative w-full p-4 sm:py-6 md:py-8 md:px-10"
+					className="relative w-full p-4 px-6 sm:py-6 md:py-8 md:px-10"
 				>
 					<div className="pb-6 px-12 text-center">
 						<span className="text-gray-600 font-semibold text-lg text-center">
@@ -96,30 +96,30 @@ export default function ContactForm() {
 							name="firstName"
 							label="First name"
 							required
-							bg="bg-gray-50"
+							bg="bg-gray-100"
 							{...register('firstName')}
 						/>
 						<Input
 							name="lastName"
 							label="Last name"
 							required
-							bg="bg-gray-50"
+							bg="bg-gray-100"
 							{...register('lastName')}
 						/>
 						<Input
 							name="email"
 							label="Email address"
 							required
-							bg="bg-gray-50"
+							bg="bg-gray-100"
 							{...register('email')}
 						/>
-						<Input name="phone" label="Phone number" bg="bg-gray-50" {...register('phone')} />
+						<Input name="phone" label="Phone number" bg="bg-gray-100" {...register('phone')} />
 						<TextArea
 							name="message"
 							label="Message"
 							height="h-48"
 							required
-							bg="bg-gray-50"
+							bg="bg-gray-100"
 							{...register('message')}
 						/>
 					</div>
