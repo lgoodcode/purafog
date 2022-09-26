@@ -56,7 +56,7 @@
   border-radius: 50%;
   cursor: pointer;
   z-index: 1001; /* Sit on top of everything */
-  border:1px solid black;
+  border:1px solid #888;
 
 }
 
@@ -76,8 +76,8 @@
   height: 10px;
   top: 50%;
   left: 54%;
-  border-right: 2px solid black;
-  border-bottom: 2px solid black;
+  border-right: 2px solid #888;
+  border-bottom: 2px solid #888;
   transform: translate(-50%, -50%) rotate(135deg);
 }
 
