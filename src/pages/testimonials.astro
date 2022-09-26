@@ -1,15 +1,15 @@
 ---
 import Layout from '@/components/Layout.astro'
 import Banner from '@/components/Banner.astro'
-import Reviews from '@/components/Reviews.astro'
+import Reviews from '@/components/Reviews'
 ---
 
 <Layout title="Testimonials - PURaFOG">
 	<Banner title="Testimonials" />
 	<main>
-		<section class="reviews py-60">
-			<div class="">
-				<Reviews />
+		<section class="py-24 lg:px-72">
+			<div class="px-6 lg:px-36">
+				<Reviews client:visible />
 			</div>
 		</section>
 	</main>
