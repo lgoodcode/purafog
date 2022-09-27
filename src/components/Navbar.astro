@@ -2,7 +2,7 @@
 import routes from '@/routes'
 import MobileMenu from './MobileMenu'
 
-const path = Astro.url.pathname.replace(/\w+\/$/, '')
+const path = Astro.url.pathname === '/' ? Astro.url.pathname : Astro.url.pathname.replace(/\/$/, '')
 ---
 
 <div class="header">
