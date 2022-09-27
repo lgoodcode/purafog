@@ -2,7 +2,7 @@
 import routes from '@/routes'
 import MobileMenu from './MobileMenu'
 
-const path = Astro.url.pathname
+const path = Astro.url.pathname.replace(/\w+\/$/, '')
 ---
 
 <div class="header">
@@ -13,7 +13,7 @@ const path = Astro.url.pathname
 	</div>
 	<div class="navbar centered">
 		<div class="mobile h-[160px] px-4 py-2 flex lg:hidden items-center justify-between w-full">
-			<div class="h-full relative">
+			<div class="h-full relative centered">
 				<img src="/logo.webp" alt="logo" class="h-32" />
 			</div>
 			<a href="tel:833-364-6653" class="font-bold text-xl text-gray-600">833-364-6653</a>

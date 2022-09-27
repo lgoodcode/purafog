@@ -2,13 +2,15 @@ import { useState, useEffect } from 'preact/hooks'
 import PulseSpinner from './PulseSpinner'
 import type { Review } from '@/types/review'
 
-const isDev = import.meta.env.MODE === 'development'
 const GOOGLE_API__KEY = import.meta.env.PUBLIC_GOOGLE_API_KEY
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
+
+if (!GOOGLE_API__KEY) {
+	throw new Error('PUBLIC_GOOGLE_API_KEY is not defined')
+}
+
+const proxyUrl = 'https://cors-anywhere-gu1c.onrender.com/'
 const placesUrl = 'https://maps.googleapis.com/maps/api/place/details/json'
-const placesQuery = `${
-	isDev ? proxyUrl : ''
-}${placesUrl}?place_id=ChIJT7DvfEBzkVQRvLh_ESdvfGg&key=${GOOGLE_API__KEY}&reviews_sort=newest&fields=reviews`
+const placesQuery = `${proxyUrl}${placesUrl}?place_id=ChIJT7DvfEBzkVQRvLh_ESdvfGg&key=${GOOGLE_API__KEY}&reviews_sort=newest&fields=reviews`
 
 export default function Reviews() {
 	const [reviews, setReviews] = useState<Review[]>([])
