@@ -9,10 +9,10 @@ if (!GOOGLE_API__KEY) {
 }
 
 const proxyUrl = 'https://cors-anywhere-gu1c.onrender.com/'
+// const proxyUrl = 'http://localhost:8000/'
 const placesUrl = 'https://maps.googleapis.com/maps/api/place/details/json'
 const placesQuery = `${proxyUrl}${placesUrl}?place_id=ChIJT7DvfEBzkVQRvLh_ESdvfGg&key=${GOOGLE_API__KEY}&reviews_sort=newest&fields=reviews`
-// const mainPlaceId =
-// const placeId2 = 'ChIJT7DvfEBzkVQRvLh_ESdvfGg'
+
 export default function Reviews() {
 	const [reviews, setReviews] = useState<Review[]>([])
 	const [loading, setLoading] = useState(true)
@@ -25,8 +25,6 @@ export default function Reviews() {
 					referrerPolicy: 'no-referrer',
 					headers: {
 						'Access-Control-Allow-Origin': '*',
-						// Cache for 1 hour
-						'Cache-Control': `max-age ${60 * 60}`,
 					},
 				})
 

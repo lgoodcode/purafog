@@ -6,6 +6,6 @@
     "paths": {
       "@/*": ["./*"],
     },
-    "types": ["astro/client"]
+    "types": ["astro/client", "node"]
   },
 }
