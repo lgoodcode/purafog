@@ -34,11 +34,11 @@ const createMessage = (data: Contact): MailDataRequired => {
 	return {
 		to: {
 			email: process.env.TO_EMAIL,
-			name: process.env.TO_NAME,
+			name: process.env.TO_NAME || '',
 		},
 		from: {
 			email: process.env.FROM_EMAIL,
-			name: process.env.FROM_NAME,
+			name: process.env.FROM_NAME || '',
 		},
 		templateId: process.env.TEMPLATE_ID,
 		dynamicTemplateData: {

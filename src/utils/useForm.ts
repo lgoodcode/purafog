@@ -126,7 +126,10 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 				// If we can validate without a form submission or if the form has been submitted
 				// then we can always validate on change
 				if (options?.validateChangeWithoutSubmit || attempted) {
-					setErrors({ ...errors, [key]: validate(key, e.target.value).error })
+					setErrors((prevErrors) => ({
+						...prevErrors,
+						[key]: validate(key, e.target.value).error,
+					}))
 				}
 			},
 			options?.debounce ? options?.debounceTime : 0
@@ -134,6 +137,9 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 
 	/**
 	 * Validates the input field when leaving focus of the element.
+	 *
+	 * Also is used to validate when the user uses autocomplete to fill in
+	 * fields. The autocomplete event is fired after the blur event.
 	 *
 	 * Only validates if the specified field has an input value and is required.
 	 * Deletes the error and revalidates the input so that if there is no error,
@@ -145,10 +151,10 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 	const handleBlur = (key: keyof T) => (e: any) => {
 		// Need to set the data on blur for autocompleted values
 		if (e.target.value) {
-			setData({
-				...data,
+			setData((prevData) => ({
+				...prevData,
 				[key]: options?.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
-			})
+			}))
 		}
 
 		// If no validations
@@ -169,10 +175,10 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 		const { valid, error } = validate(key, e.target.value)
 		// If the field is valid, remove the error
 		if (valid) {
-			setErrors({ ...errors })
+			setErrors((prevErrors) => ({ ...prevErrors }))
 			// Otherwise, set the error
 		} else {
-			setErrors({ ...errors, [key]: error })
+			setErrors((prevErrors) => ({ ...prevErrors, [key]: error }))
 		}
 	}
 
