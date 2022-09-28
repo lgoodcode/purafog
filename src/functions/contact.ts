@@ -92,7 +92,7 @@ const handler: Handler = async ({ httpMethod, body }) => {
 		}
 
 		const errors: Partial<Record<keyof Contact, string>> = {}
-		const result: Partial<Contact> = {}
+		const result = {} as Contact
 
 		for (const [key, value] of Object.entries(data) as [keyof Contact, string][]) {
 			const required = validations[key]?.required
@@ -119,7 +119,7 @@ const handler: Handler = async ({ httpMethod, body }) => {
 		}
 
 		try {
-			await mg.messages().send(createMessage(result as Contact))
+			await mg.messages().send(createMessage(result))
 
 			console.log('Message sent')
 
