@@ -2,17 +2,6 @@ import { useState, useEffect } from 'preact/hooks'
 import PulseSpinner from './PulseSpinner'
 import type { Review } from '@/types/review'
 
-const GOOGLE_API__KEY = import.meta.env.PUBLIC_GOOGLE_API_KEY
-
-if (!GOOGLE_API__KEY) {
-	throw new Error('PUBLIC_GOOGLE_API_KEY is not defined')
-}
-
-const proxyUrl = 'https://cors-anywhere-gu1c.onrender.com/'
-// const proxyUrl = 'http://localhost:8000/'
-const placesUrl = 'https://maps.googleapis.com/maps/api/place/details/json'
-const placesQuery = `${proxyUrl}${placesUrl}?place_id=ChIJT7DvfEBzkVQRvLh_ESdvfGg&key=${GOOGLE_API__KEY}&reviews_sort=newest&fields=reviews`
-
 export default function Reviews() {
 	const [reviews, setReviews] = useState<Review[]>([])
 	const [loading, setLoading] = useState(true)
@@ -20,23 +9,14 @@ export default function Reviews() {
 	useEffect(() => {
 		const getReviews = async () => {
 			setLoading(true)
+
 			try {
-				const res = await fetch(placesQuery, {
-					referrerPolicy: 'no-referrer',
-					headers: {
-						'Access-Control-Allow-Origin': '*',
-					},
-				})
+				const res = await fetch('/.netlify/functions/reviews').then((res) => res.json())
 
-				if (!res.ok) {
-					throw new Error(await res.text())
-				}
-				const json = await res.json()
-
-				if ('error_message' in json) {
-					console.error(json)
+				if ('error_message' in res) {
+					console.error(res)
 				} else {
-					setReviews(json.result.reviews)
+					setReviews(res)
 				}
 			} catch (err) {
 				console.error(err)
