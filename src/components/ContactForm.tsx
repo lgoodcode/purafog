@@ -14,7 +14,6 @@ export default function ContactForm() {
 		validations,
 		sanitizeFn: sanitize,
 		onSubmit: async (data) => {
-			console.log(data)
 			try {
 				const res = await fetch('/.netlify/functions/contact', {
 					method: 'POST',

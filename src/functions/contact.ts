@@ -1,5 +1,5 @@
 import type { Handler } from '@netlify/functions'
-import sgMail, { type MailDataRequired } from '@sendgrid/mail'
+import mailgun from 'mailgun-js'
 import sanitize from '@/utils/sanitize'
 import validations from '@/utils/validations'
 import type { Contact } from '@/types/contact'
@@ -9,8 +9,12 @@ const headers = {
 	'Content-Type': 'application/json',
 }
 
-if (!process.env.SENDGRID_API_KEY) {
-	throw new Error('Missing SENDGRID_API_KEY')
+if (!process.env.MAILGUN_API_KEY) {
+	throw new Error('Missing MAILGUN_API_KEY')
+}
+
+if (!process.env.MAILGUN_DOMAIN) {
+	throw new Error('Missing MAILGUN_DOMAIN')
 }
 
 if (!process.env.TO_EMAIL) {
@@ -21,37 +25,32 @@ if (!process.env.FROM_EMAIL) {
 	throw new Error('Missing FROM_EMAIL')
 }
 
-if (!process.env.TEMPLATE_ID) {
-	throw new Error('Missing TEMPLATE_ID')
+if (!process.env.TEMPLATE) {
+	throw new Error('Missing TEMPLATE')
 }
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN })
 
-const createMessage = (data: Contact): MailDataRequired => {
+const createMessage = (data: Contact) => {
 	const { firstName, lastName, phone, email, message } = data
 	const name = `${firstName} ${lastName}`
 
 	return {
-		to: {
-			email: process.env.TO_EMAIL,
-			name: process.env.TO_NAME || '',
-		},
-		from: {
-			email: process.env.FROM_EMAIL,
-			name: process.env.FROM_NAME || '',
-		},
-		templateId: process.env.TEMPLATE_ID,
-		dynamicTemplateData: {
+		to: process.env.TO_NAME
+			? `${process.env.TO_NAME + ' ' || ''}<${process.env.TO_EMAIL}>`
+			: process.env.TO_EMAIL,
+		from: process.env.FROM_NAME
+			? `${process.env.FROM_NAME + ' ' || ''}<${process.env.FROM_EMAIL}>`
+			: process.env.TO_EMAIL,
+		template: process.env.TEMPLATE || '',
+		subject: 'New Contact',
+		'h:X-Mailgun-Variables': JSON.stringify({
 			name,
 			email,
 			phone,
 			message,
-		},
+		}),
 	}
-}
-
-const sendMessage = (message: MailDataRequired) => {
-	return sgMail.send(message).then((res) => res[0].statusCode === 202)
 }
 
 const handler: Handler = async ({ httpMethod, body }) => {
@@ -120,7 +119,7 @@ const handler: Handler = async ({ httpMethod, body }) => {
 		}
 
 		try {
-			await sendMessage(createMessage(result as Contact))
+			await mg.messages().send(createMessage(result as Contact))
 
 			console.log('Message sent')
 
