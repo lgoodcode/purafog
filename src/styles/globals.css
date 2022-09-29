@@ -6,6 +6,10 @@
   button {
     @apply disabled:cursor-not-allowed;
   }
+
+  p {
+    @apply leading-7 text-gray-800;
+  }
 }
 
 @layer utilities {
