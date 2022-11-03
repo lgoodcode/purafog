@@ -11,27 +11,27 @@ const placesQuery = `${placesUrl}?place_id=ChIJT7DvfEBzkVQRvLh_ESdvfGg&key=${GOO
  * doesn't support CORS and this is much faster than using a proxy.
  */
 const handler: Handler = async ({ httpMethod }) => {
-	if (httpMethod !== 'GET') {
-		console.error(`Method ${httpMethod} not allowed`)
+  if (httpMethod !== 'GET') {
+    console.error(`Method ${httpMethod} not allowed`)
 
-		return {
-			headers,
-			statusCode: 405,
-			body: JSON.stringify({ error: 'Method Not Allowed' }),
-		}
-	}
+    return {
+      headers,
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
+    }
+  }
 
-	return await fetch(placesQuery)
-		.then((res) => res.json())
-		.then((data: any) => ({
-			headers,
-			statusCode: 200,
-			body: JSON.stringify(data.result?.reviews),
-		}))
-		.catch((err) => {
-			console.error(err)
-			return { statusCode: 500 }
-		})
+  return await fetch(placesQuery)
+    .then((res) => res.json())
+    .then((data: any) => ({
+      headers,
+      statusCode: 200,
+      body: JSON.stringify(data.result?.reviews),
+    }))
+    .catch((err) => {
+      console.error(err)
+      return { statusCode: 500 }
+    })
 }
 
 export { handler }

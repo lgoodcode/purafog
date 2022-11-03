@@ -3,18 +3,18 @@
  * the timer and the function will be called after the timer has elapsed.
  */
 export default (func: (...args: any) => void, timeout = 10) => {
-	let timer: NodeJS.Timeout
-	let time = Date.now()
+  let timer: NodeJS.Timeout
+  let time = Date.now()
 
-	return (...args: any) => {
-		if (timer) clearTimeout(timer)
+  return (...args: any) => {
+    if (timer) clearTimeout(timer)
 
-		time = Date.now()
+    time = Date.now()
 
-		timer = setTimeout(() => {
-			if (Date.now() - time > timeout) {
-				func.apply(this, args)
-			}
-		}, timeout)
-	}
+    timer = setTimeout(() => {
+      if (Date.now() - time > timeout) {
+        func.apply(this, args)
+      }
+    }, timeout)
+  }
 }
