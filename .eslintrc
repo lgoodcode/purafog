@@ -30,5 +30,6 @@
       "asyncArrow": "always"
     }],
     "react-hooks/exhaustive-deps": "off"
-  }
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "public/", "src/styles/**/*"]
 }

@@ -8,7 +8,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint --cache --fix src/**/*",
+    "typecheck": "npx tsc --noEmit"
   },
   "lint-staged": {
     "./src/**/*.{astro,js,jsx,ts,tsx}": "eslint --cache --fix"
