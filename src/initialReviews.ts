@@ -1,5 +1,3 @@
-import type { Review } from './types/review'
-
 const data: Review[] = [
   {
     author_name: 'Isaac Schaefer',

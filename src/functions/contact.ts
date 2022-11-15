@@ -1,20 +1,10 @@
 import type { Handler } from '@netlify/functions'
-import mailgun from 'mailgun-js'
+import fetch from 'node-fetch'
 import sanitize from '@/utils/sanitize'
 import validations from '@/utils/validations'
-import type { Contact } from '@/types/contact'
 
-const KEYS: (keyof Contact)[] = ['firstName', 'lastName', 'email', 'message']
-const headers = {
-  'Content-Type': 'application/json',
-}
-
-if (!process.env.MAILGUN_API_KEY) {
-  throw new Error('Missing MAILGUN_API_KEY')
-}
-
-if (!process.env.MAILGUN_DOMAIN) {
-  throw new Error('Missing MAILGUN_DOMAIN')
+if (!process.env.SENDINBLUE_API_KEY) {
+  throw new Error('Missing SENDINBLUE_API_KEY')
 }
 
 if (!process.env.TO_EMAIL) {
@@ -25,32 +15,39 @@ if (!process.env.FROM_EMAIL) {
   throw new Error('Missing FROM_EMAIL')
 }
 
-if (!process.env.TEMPLATE) {
-  throw new Error('Missing TEMPLATE')
+if (!process.env.TEMPLATE_ID) {
+  throw new Error('Missing TEMPLATE_ID')
 }
 
-const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN })
+const KEYS: (keyof Contact)[] = ['firstName', 'lastName', 'email', 'message']
+const headers = {
+  accept: 'application/json',
+  'Content-Type': 'application/json',
+}
 
 const createMessage = (data: Contact) => {
   const { firstName, lastName, phone, email, message } = data
   const name = `${firstName} ${lastName}`
 
-  return {
-    to: process.env.TO_NAME
-      ? `${process.env.TO_NAME + ' ' || ''}<${process.env.TO_EMAIL}>`
-      : process.env.TO_EMAIL,
-    from: process.env.FROM_NAME
-      ? `${process.env.FROM_NAME + ' ' || ''}<${process.env.FROM_EMAIL}>`
-      : process.env.TO_EMAIL,
-    template: process.env.TEMPLATE || '',
-    subject: 'New Contact',
-    'h:X-Mailgun-Variables': JSON.stringify({
-      name,
-      email,
-      phone,
-      message,
-    }),
-  }
+  return JSON.stringify({
+    sender: {
+      name: process.env.FROM_NAME || 'PURaFOG',
+      email: process.env.FROM_EMAIL,
+    },
+    to: [
+      {
+        name: process.env.TO_NAME || 'PURaFOG',
+        email: process.env.TO_EMAIL,
+      },
+    ],
+    templateId: Number(process.env.TEMPLATE_ID),
+    params: {
+      NAME: name,
+      EMAIL: email,
+      PHONE: phone,
+      MESSAGE: message,
+    },
+  })
 }
 
 const handler: Handler = async ({ httpMethod, body }) => {
@@ -118,10 +115,21 @@ const handler: Handler = async ({ httpMethod, body }) => {
       }
     }
 
-    try {
-      await mg.messages().send(createMessage(result))
+    // Create the email message
+    const message = createMessage(result)
 
-      console.log('Message sent')
+    // Send the email
+    try {
+      const res = await fetch('https://api.sendinblue.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          ...headers,
+          'api-key': process.env.SENDINBLUE_API_KEY as string,
+        },
+        body: message,
+      })
+
+      console.log('[RESULT]:', await res.json())
 
       return { statusCode: 201 }
     } catch (err) {
@@ -130,7 +138,10 @@ const handler: Handler = async ({ httpMethod, body }) => {
       return {
         headers,
         statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to send message' }),
+        body: JSON.stringify({
+          body: message,
+          message: (err as Error).message,
+        }),
       }
     }
     // This is catching an error when calling JSON.parse(body)

@@ -6,7 +6,7 @@ import preact from '@astrojs/preact'
 
 // https://astro.build/config
 export default defineConfig({
-	// Use to generate the sitemap and canonical URLs in the final build
-	site: 'https://purafog.com',
-	integrations: [tailwind(), image(), sitemap(), preact()],
+  // Use to generate the sitemap and canonical URLs in the final build
+  site: 'https://purafog.com',
+  integrations: [tailwind(), image(), sitemap(), preact()],
 })

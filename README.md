@@ -1,6 +1,6 @@
 # Astro
 
-Astro is awesome. It does, howver, have a few quirks.
+Astro is awesome. It does, however, have a few quirks.
 
 ## VSCode
 
@@ -17,13 +17,12 @@ You can find them in the `.vscode` folder.
 The environment variables are used for the Mailgun API and Google Business API to retrieve the reviews
 for the business.
 
-- `MAILGUN_API_KEY` - The API key for Mailgun
-- `MAILGUN_DOMAIN` - The domain for Mailgun
-- `FROM_EMAIL` - The email address to send the emails from for the user (lisa@purafog.com)
-- `FROM_NAME` - The name to send the emails from for the user (Lisa)
+- `SENDINBLUE_API_KEY` - The API key for SendInBlue
+- `FROM_EMAIL` - The email address to send the emails from for the user 
+- `[FROM_NAME] PURaFOG` - The name to send the emails from for the user 
 - `TO_EMAIL` - The email address to send the emails to from the form
-- `TO_NAME` - The name to send the emails to from the form (no-reply|PURaFOG)
-- `TEMPLATE` - The template to use for the email in Mailgun
+- `[TO_NAME] Lisa Stephens` - The name to send the emails to from the form 
+- `TEMPLATE_ID` - The template to use for the email in SendInBlue
 
 
 ## Netlify Functions

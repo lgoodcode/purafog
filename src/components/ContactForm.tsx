@@ -4,7 +4,6 @@ import PulseSpinner from '@/components/PulseSpinner'
 import { useForm } from '@/utils/useForm'
 import sanitize from '@/utils/sanitize'
 import validations from '@/utils/validations'
-import type { Contact } from '@/types/contact'
 import Input from './Input'
 import TextArea from './TextArea'
 
