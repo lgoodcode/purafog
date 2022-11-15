@@ -1,4 +1,5 @@
 import type { Handler } from '@netlify/functions'
+import fetch from 'node-fetch'
 import sanitize from '@/utils/sanitize'
 import validations from '@/utils/validations'
 
@@ -131,7 +132,6 @@ const handler: Handler = async ({ httpMethod, body }) => {
         headers,
         statusCode: 500,
         body: JSON.stringify({
-          error: 'Failed to send message',
           body: createMessage(result),
           message: (err as Error).message,
         }),
