@@ -2,7 +2,6 @@ import type { Handler } from '@netlify/functions'
 import mailgun from 'mailgun-js'
 import sanitize from '@/utils/sanitize'
 import validations from '@/utils/validations'
-import type { Contact } from '@/types/contact'
 
 const KEYS: (keyof Contact)[] = ['firstName', 'lastName', 'email', 'message']
 const headers = {
@@ -119,7 +118,7 @@ const handler: Handler = async ({ httpMethod, body }) => {
     }
 
     try {
-      await mg.messages().send(createMessage(result))
+      await mg.messages().send(createMessage(result) as mailgun.messages.SendData)
 
       console.log('Message sent')
 

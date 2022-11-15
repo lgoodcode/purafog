@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'preact/hooks'
 import PulseSpinner from './PulseSpinner'
-import type { Review } from '@/types/review'
 
 type ReviewsProps = {
   initialReviews?: Review[]
