@@ -130,7 +130,11 @@ const handler: Handler = async ({ httpMethod, body }) => {
       return {
         headers,
         statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to send message' }),
+        body: JSON.stringify({
+          error: 'Failed to send message',
+          body: createMessage(result),
+          message: (err as Error).message,
+        }),
       }
     }
     // This is catching an error when calling JSON.parse(body)
