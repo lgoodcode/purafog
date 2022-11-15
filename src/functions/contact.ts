@@ -23,7 +23,6 @@ const KEYS: (keyof Contact)[] = ['firstName', 'lastName', 'email', 'message']
 const headers = {
   accept: 'application/json',
   'Content-Type': 'application/json',
-  'api-key': process.env.SENDINBLUE_API_KEY,
 }
 
 const createMessage = (data: Contact) => {
@@ -35,11 +34,13 @@ const createMessage = (data: Contact) => {
       name: process.env.FROM_NAME || 'PURaFOG',
       email: process.env.FROM_EMAIL,
     },
-    to: {
-      name: process.env.TO_NAME || 'PURaFOG',
-      email: process.env.TO_EMAIL,
-    },
-    templateId: process.env.TEMPLATE_ID,
+    to: [
+      {
+        name: process.env.TO_NAME || 'PURaFOG',
+        email: process.env.TO_EMAIL,
+      },
+    ],
+    templateId: Number(process.env.TEMPLATE_ID),
     params: {
       NAME: name,
       EMAIL: email,
@@ -114,15 +115,21 @@ const handler: Handler = async ({ httpMethod, body }) => {
       }
     }
 
+    // Create the email message
+    const message = createMessage(result)
+
     // Send the email
     try {
       const res = await fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
-        headers,
-        body: createMessage(result),
+        headers: {
+          ...headers,
+          'api-key': process.env.SENDINBLUE_API_KEY as string,
+        },
+        body: message,
       })
 
-      console.log(await res.json())
+      console.log('[RESULT]:', await res.json())
 
       return { statusCode: 201 }
     } catch (err) {
@@ -132,7 +139,7 @@ const handler: Handler = async ({ httpMethod, body }) => {
         headers,
         statusCode: 500,
         body: JSON.stringify({
-          body: createMessage(result),
+          body: message,
           message: (err as Error).message,
         }),
       }

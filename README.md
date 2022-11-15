@@ -18,10 +18,10 @@ The environment variables are used for the Mailgun API and Google Business API t
 for the business.
 
 - `SENDINBLUE_API_KEY` - The API key for SendInBlue
-- `FROM_EMAIL` - The email address to send the emails from for the user (lisa@purafog.com)
-- `[FROM_NAME]` - The name to send the emails from for the user (Lisa)
+- `FROM_EMAIL` - The email address to send the emails from for the user 
+- `[FROM_NAME] PURaFOG` - The name to send the emails from for the user 
 - `TO_EMAIL` - The email address to send the emails to from the form
-- `[TO_NAME]` - The name to send the emails to from the form [PURaFOG]
+- `[TO_NAME] Lisa Stephens` - The name to send the emails to from the form 
 - `TEMPLATE_ID` - The template to use for the email in SendInBlue
 
 
