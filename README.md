@@ -25,6 +25,11 @@ for the business.
 - `TEMPLATE_ID` - The template to use for the email in SendInBlue
 
 
+## Transactional Emails
+
+The provider used is [Send In Blue](https://app-smtp.sendinblue.com/), which provides real time tracking,
+better template editing, and free domain emails.
+
 ## Netlify Functions
 
 This project uses edge functions to handle the form submission. The functions are located in the `functions` folder,
