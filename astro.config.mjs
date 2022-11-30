@@ -7,7 +7,7 @@ import partytown from '@astrojs/partytown'
 
 // https://astro.build/config
 export default defineConfig({
-  // Use to generate the sitemap and canonical URLs in the final build
+  // Used to generate the sitemap and canonical URLs in the final build for crawling
   site: 'https://purafog.com',
   integrations: [
     tailwind(),

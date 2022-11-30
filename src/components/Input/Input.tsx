@@ -1,3 +1,5 @@
+import './input.css'
+
 export type InputProps = {
   name: string
   label: string
@@ -13,6 +15,12 @@ export type InputProps = {
   color?: 'light' | 'dark'
 }
 
+//
+// ! IMPORTANT !
+//
+// When using this component, you must set the 'focus:border-COLOR' and 'peer-focus:text-COLOR' classes
+// as well as the 'text-COLOR' class on the input element.
+//
 export default function Input({
   name,
   label,
@@ -45,14 +53,14 @@ export default function Input({
             'rounded-lg',
             'border',
             'border-1',
-            Boolean(error) ? 'border-red-500' : 'border-gray-300',
+            Boolean(error) ? 'border-red-400' : 'border-gray-300',
             'bg-transparent',
             'px-2.5',
             'pb-2.5',
             'pt-4',
             size === 'sm' ? 'text-sm' : size === 'md' ? 'text-md' : 'text-lg',
-            color === 'light' ? 'text-gray-50' : 'text-gray-800',
-            Boolean(error) ? 'focus:border-red-500' : 'focus:border-green-600',
+            color === 'light' ? 'text-gray-800' : 'text-gray-50',
+            Boolean(error) ? 'focus:border-red-400' : 'focus:border-green-600',
             'focus:outline-none',
             'focus:ring-0',
           ].join(' ')}
@@ -70,10 +78,10 @@ export default function Input({
             'transform',
             'cursor-text',
             'select-none',
-            bg ? bg : 'bg-white', // The bg must be the color of the input's background
+            bg ? bg : 'bg-purple-500', // The bg must be the color of the input's background
             'px-2',
             size === 'sm' ? 'text-sm' : size === 'md' ? 'text-md' : 'text-lg',
-            Boolean(error) ? 'text-red-500' : 'text-gray-500',
+            Boolean(error) ? 'text-red-400' : 'text-gray-500',
             'duration-300',
             'peer-placeholder-shown:top-1/2',
             'peer-placeholder-shown:-translate-y-1/2',
@@ -82,7 +90,7 @@ export default function Input({
             'peer-focus:-translate-y-5',
             'peer-focus:scale-75',
             'peer-focus:px-2',
-            Boolean(error) ? 'focus:text-red-500' : 'peer-focus:text-green-600',
+            Boolean(error) ? 'focus:text-red-400' : 'peer-focus:text-green-600',
           ].join(' ')}
         >
           {label + (required ? '*' : '')}
@@ -91,7 +99,7 @@ export default function Input({
 
       {error && (
         <div className="ml-2">
-          <span className="text-sm text-red-500">{error}</span>
+          <span className="text-sm text-red-400">{error}</span>
         </div>
       )}
     </div>
