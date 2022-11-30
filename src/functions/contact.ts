@@ -69,89 +69,78 @@ const handler: Handler = async ({ httpMethod, body }) => {
     }
   }
 
+  const data = JSON.parse(body) as Contact
+  const keysFound = Object.keys(data)
+  // If we don't have all the required properties
+  if (!KEYS.every((key) => keysFound.includes(key as keyof Contact))) {
+    const missing = KEYS.filter((key) => !keysFound.includes(key))
+
+    console.error(`Missing keys: ${missing.join(', ')}`)
+
+    return {
+      headers,
+      statusCode: 400,
+      body: JSON.stringify({
+        // Set the error to have a property of an array of the missing keys
+        errors: { missing },
+      }),
+    }
+  }
+
+  const errors: Partial<Record<keyof Contact, string>> = {}
+  const result = {} as Contact
+
+  for (const [key, value] of Object.entries(data) as [keyof Contact, string][]) {
+    const required = validations[key]?.required
+    const pattern = validations[key]?.pattern
+
+    if (required && !value) {
+      errors[key] = `Invalid ${key}: missing required field`
+    } else if (pattern && !pattern.value.test(value)) {
+      errors[key] = `Invalid ${key}: failed pattern test`
+    } else {
+      result[key] = sanitize(value)
+    }
+  }
+
+  // If any errors were found, return the error response
+  if (Object.keys(errors).length) {
+    console.error(`Errors: ${JSON.stringify(errors)}`)
+
+    return {
+      headers,
+      statusCode: 400,
+      body: JSON.stringify({ errors }),
+    }
+  }
+
+  // Create the email message
+  const message = createMessage(result)
+
+  // Send the email
   try {
-    const data = JSON.parse(body) as Contact
-    const keysFound = Object.keys(data)
-    // If we don't have all the required properties
-    if (!KEYS.every((key) => keysFound.includes(key as keyof Contact))) {
-      const missing = KEYS.filter((key) => !keysFound.includes(key))
+    const res = await fetch('https://api.sendinblue.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'api-key': process.env.SENDINBLUE_API_KEY as string,
+      },
+      body: message,
+    })
 
-      console.error(`Missing keys: ${missing.join(', ')}`)
+    console.log('[RESULT]:', await res.json())
 
-      return {
-        headers,
-        statusCode: 400,
-        body: JSON.stringify({
-          // Set the error to have a property of an array of the missing keys
-          errors: { missing },
-        }),
-      }
-    }
-
-    const errors: Partial<Record<keyof Contact, string>> = {}
-    const result = {} as Contact
-
-    for (const [key, value] of Object.entries(data) as [keyof Contact, string][]) {
-      const required = validations[key]?.required
-      const pattern = validations[key]?.pattern
-
-      if (required && !value) {
-        errors[key] = `Invalid ${key}: missing required field`
-      } else if (pattern && !pattern.value.test(value)) {
-        errors[key] = `Invalid ${key}: failed pattern test`
-      } else {
-        result[key] = sanitize(value)
-      }
-    }
-
-    // If any errors were found, return the error response
-    if (Object.keys(errors).length) {
-      console.error(`Errors: ${JSON.stringify(errors)}`)
-
-      return {
-        headers,
-        statusCode: 400,
-        body: JSON.stringify({ errors }),
-      }
-    }
-
-    // Create the email message
-    const message = createMessage(result)
-
-    // Send the email
-    try {
-      const res = await fetch('https://api.sendinblue.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          ...headers,
-          'api-key': process.env.SENDINBLUE_API_KEY as string,
-        },
-        body: message,
-      })
-
-      console.log('[RESULT]:', await res.json())
-
-      return { statusCode: 201 }
-    } catch (err) {
-      console.error(err)
-
-      return {
-        headers,
-        statusCode: 500,
-        body: JSON.stringify({
-          body: message,
-          message: (err as Error).message,
-        }),
-      }
-    }
-    // This is catching an error when calling JSON.parse(body)
+    return { statusCode: 201 }
   } catch (err) {
     console.error(err)
 
     return {
       headers,
       statusCode: 500,
-      body: JSON.stringify({ error: 'Something wrong happened. Probs bad JSON input' }),
+      body: JSON.stringify({
+        body: message,
+        message: (err as Error).message,
+      }),
     }
   }
 }
