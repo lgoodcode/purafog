@@ -29,7 +29,7 @@ export type ErrorRecord<T> = Partial<Record<keyof T, string>>
 
 export type SubmitStatus = 'submitting' | 'success' | 'failure' | 'none'
 
-export type SubmitHandler<T> = (data: Partial<T>) => Promise<boolean>
+export type SubmitHandler = (data: any) => Promise<boolean>
 
 /**
  * @interface FormOptions
@@ -52,7 +52,7 @@ export type SubmitHandler<T> = (data: Partial<T>) => Promise<boolean>
 export type FormOptions<T> = {
   initialValues?: Partial<T>
   validations?: Validations<T>
-  onSubmit: SubmitHandler<T>
+  onSubmit: SubmitHandler
   sanitizeFn?: (value: string) => string
   validateBlurWithoutSubmit?: boolean
   validateChangeWithoutSubmit?: boolean
@@ -60,7 +60,7 @@ export type FormOptions<T> = {
   debounceTime?: number
 }
 
-export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions<T>) => {
+export const useForm = <T extends Record<keyof T, any>>(options: FormOptions<T>) => {
   // Data will have the type of the object type we want from the form and
   // will set to the optional initialValues or an empty object, which we
   // will then have to assert the possible empty object to the generic type
@@ -71,6 +71,10 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
   const [status, setStatus] = useState<SubmitStatus>('none')
   const [attempted, setAttempted] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+
+  // Set default values for options
+  options.debounce = options.debounce ?? false
+  options.debounceTime = options.debounceTime ?? 0
 
   const validate = (key: keyof T, value: T[typeof key] = data[key]) => {
     const { required, pattern, validate } = options?.validations?.[key] ?? {}
@@ -116,21 +120,18 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
    * @param key the key of the field to update
    */
   const handleChange = (key: keyof T) =>
-    debounce(
-      (e: any) => {
-        // Access previous data to prevent race conditions
-        setData((prevData) => ({
-          ...prevData,
-          [key]: options?.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
-        }))
-        // If we can validate without a form submission or if the form has been submitted
-        // then we can always validate on change
-        if (options?.validateChangeWithoutSubmit || attempted) {
-          setErrors({ ...errors, [key]: validate(key, e.target.value).error })
-        }
-      },
-      options?.debounce ? options?.debounceTime : 0
-    )
+    debounce((e: any) => {
+      // Access previous data to prevent race conditions
+      setData((prevData) => ({
+        ...prevData,
+        [key]: options.sanitizeFn ? options.sanitizeFn(e.target.value) : e.target.value,
+      }))
+      // If we can validate without a form submission or if the form has been submitted
+      // then we can always validate on change
+      if (options?.validateChangeWithoutSubmit || attempted) {
+        setErrors({ ...errors, [key]: validate(key, e.target.value).error })
+      }
+    }, options.debounceTime)
 
   /**
    * Validates the input field when leaving focus of the element.
@@ -177,8 +178,8 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
   }
 
   /**
-   * Takes the key of the field to pass the error string and the onChange and
-   * onBlur handlers together.
+   * Takes the key of the field to pass the error string, the onChange, and
+   * onBlur handlers together for a single input element to reduce repetition.
    *
    * @param key the key of the field to validate
    * @returns the `error` for the field and the `onChange` and `onBlur` handlers
@@ -203,7 +204,7 @@ export const useForm = <T extends Record<keyof T, unknown>>(options: FormOptions
 
       for (const key in validations) {
         const { valid, error } = validate(key, data[key])
-
+        console.log('validating', key, data[key], valid, error)
         if (!valid) {
           isValid = false
           newErrors[key] = error
