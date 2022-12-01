@@ -43,7 +43,3 @@ the request to be made closer to the client instead of the server.
 
 This is used to display the reviews from the **Service Area** business profile. This is because there is no Google
 API key to be able to manage this so I had to hard code the values to be able to display them.
-
-## **TODO**
-- Look maybe check another time if it's possible to get the other reviews without an API key.
-- Add JS to add a prefetch `<link>` element on navigation hover, to preload the next page.
