@@ -31,5 +31,5 @@
     }],
     "react-hooks/exhaustive-deps": "off"
   },
-  "ignorePatterns": ["node_modules/", "dist/", "public/*", "src/styles/**/*"]
+  "ignorePatterns": ["node_modules/", "dist/", "public/*", "src/styles/**/*", "src/components/Layout.astro"]
 }
