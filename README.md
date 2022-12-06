@@ -1,6 +1,13 @@
-# Astro
+## Tech Stack
 
-Astro is awesome. It does, however, have a few quirks.
+<div width="100%">
+  <img src="https://img.shields.io/badge/Astro-FF5D01.svg?style=for-the-badge&logo=Astro&logoColor=white" />
+  <img src="https://img.shields.io/badge/Preact-673AB8.svg?style=for-the-badge&logo=Preact&logoColor=white" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=TypeScript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4.svg?style=for-the-badge&logo=Tailwind-CSS&logoColor=white" />
+  <img src="https://img.shields.io/badge/CircleCI-343434.svg?style=for-the-badge&logo=CircleCI&logoColor=white" />
+  <img src="https://img.shields.io/badge/Netlify-00C7B7.svg?style=for-the-badge&logo=Netlify&logoColor=white" />
+</div>
 
 ## VSCode
 
@@ -24,6 +31,9 @@ for the business.
 - `[TO_NAME] Lisa Stephens` - The name to send the emails to from the form 
 - `TEMPLATE_ID` - The template to use for the email in SendInBlue
 
+## Google Analytics
+
+Using [Partytown](https://docs.astro.build/en/guides/integrations-guide/partytown/) for running the analytics scripts in a web worker.
 
 ## Transactional Emails
 
