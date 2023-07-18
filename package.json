@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint --cache --fix src/**/*",
-    "typecheck": "npx tsc --noEmit"
+    "typecheck": "npx tsc --noEmit",
+    "git:reset": "git stash && git checkout main && git pull && git branch -D staging && git checkout -b staging && git push -uf origin staging && git stash pop"
   },
   "lint-staged": {
     "./src/**/*.{astro,js,jsx,ts,tsx}": "eslint --cache --fix"
